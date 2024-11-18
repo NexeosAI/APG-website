@@ -12,4 +12,10 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  assetsInclude: ['**/*.svg'],
+  server: {
+    fs: {
+      allow: ['..'],
+    },
+  },
 });

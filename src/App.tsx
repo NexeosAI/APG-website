@@ -4,6 +4,7 @@ import { Hero } from '@/components/sections/Hero';
 import { Services } from '@/components/sections/Services';
 import { About } from '@/components/sections/About';
 import { Contact } from '@/components/sections/Contact';
+import { Reviews } from '@/components/sections/Reviews';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Hero />
         <Services />
         <About />
+        <Reviews />
         <Contact />
       </main>
       <Footer />

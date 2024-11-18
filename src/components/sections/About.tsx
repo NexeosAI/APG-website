@@ -29,7 +29,7 @@ export function About() {
               Your Trusted Local Garage in Edinburgh
             </h2>
             <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
-              Since 1975, Ainslie Park Garage has been providing top-quality auto repair
+              Since 2014, Ainslie Park Garage has been providing top-quality auto repair
               services to Edinburgh residents. Our team of skilled mechanics combines
               years of experience with the latest diagnostic technology to deliver
               exceptional results.
@@ -50,11 +50,11 @@ export function About() {
           </div>
           <div className="relative mt-8 lg:mt-0">
             <img
-              src="https://images.unsplash.com/photo-1630026317249-c1c68c8e4edb?auto=format&fit=crop&q=80"
+              src="/images/mechanic-working.jpg"
               alt="Mechanic working on a car"
-              className="rounded-lg shadow-xl w-full"
+              className="rounded-lg shadow-xl w-full h-[400px] object-cover"
             />
-            <div className="absolute -bottom-6 right-0 sm:-right-6 bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-[280px] sm:max-w-xs">
+            <div className="absolute -bottom-6 right-6 bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-[280px]">
               <p className="text-base sm:text-lg font-semibold mb-2">Need urgent repairs?</p>
               <Button variant="destructive" className="w-full">
                 <a href="tel:+441315526695">Call Now</a>
