@@ -4,21 +4,21 @@ const reviews = [
   {
     id: 1,
     name: "Sarah Thompson",
-    date: "March 2024",
+    date: "November 2024",
     rating: 5,
     comment: "Huge shout-out to this garage! Amazing service. Had a major coolant Leak on Thursday night, took my car in on Friday morning and I had to get back down South on Saturday! Got an update within the hour and had the car fixed within the day!! Life saver, thank you so much!!!"
   },
   {
     id: 2,
     name: "James Wilson",
-    date: "February 2024",
+    date: "November 2024",
     rating: 5,
     comment: "Took my car for an mot and service last week, everyone was extremely welcoming and nice. When I got the car I was told about all the work that has been done on it. Outstanding service will definitely be back :)"
   },
   {
     id: 3,
     name: "Emma MacDonald",
-    date: "February 2024",
+    date: "October 2024",
     rating: 5,
     comment: "First time customer and I'm impressed! They explained everything clearly and fixed my car's issues promptly. Great customer service."
   },

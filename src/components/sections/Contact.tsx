@@ -24,7 +24,11 @@ const contactInfo = [
   },
 ];
 
-export function Contact() {
+interface ContactProps {
+  onBookingClick: () => void;
+}
+
+export function Contact({ onBookingClick }: ContactProps) {
   return (
     <section id="contact" className="py-16 sm:py-24 bg-white">
       <div className="container mx-auto px-4">
@@ -53,7 +57,11 @@ export function Contact() {
           ))}
         </div>
         <div className="mt-12 sm:mt-16 text-center">
-          <Button size="lg" variant="destructive" className="text-base sm:text-lg w-full sm:w-auto">
+          <Button 
+            variant="destructive" 
+            size="lg" 
+            onClick={onBookingClick}
+          >
             Book a Service
           </Button>
         </div>

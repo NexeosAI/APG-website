@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { Shield, Clock, ThumbsUp } from 'lucide-react';
 
 const features = [
@@ -54,12 +53,6 @@ export function About() {
               alt="Mechanic working on a car"
               className="rounded-lg shadow-xl w-full h-[400px] object-cover"
             />
-            <div className="absolute -bottom-6 right-6 bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-[280px]">
-              <p className="text-base sm:text-lg font-semibold mb-2">Need urgent repairs?</p>
-              <Button variant="destructive" className="w-full">
-                <a href="tel:+441315526695">Call Now</a>
-              </Button>
-            </div>
           </div>
         </div>
       </div>
