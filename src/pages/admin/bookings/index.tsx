@@ -95,6 +95,11 @@ export default function AdminBookingsPage() {
     }
   }, [])
 
+  const handleBookingClick = (booking: BookingWithRelations) => {
+    setSelectedBooking(booking);
+    setIsUpdateStatusOpen(true);
+  };
+
   if (isLoading) {
     return (
       <AdminDashboardLayout>
@@ -143,9 +148,7 @@ export default function AdminBookingsPage() {
                 {bookings?.map((booking) => (
                   <div
                     key={booking.id}
-                    className={`p-4 rounded-lg border ${
-                      getStatusBackgroundColor(booking.status)
-                    }`}
+                    className={`p-4 rounded-lg border ${getStatusBackgroundColor(booking.status)}`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="space-y-1">
@@ -181,10 +184,7 @@ export default function AdminBookingsPage() {
                             View Details
                           </DropdownMenuItem>
                           <DropdownMenuItem 
-                            onClick={() => {
-                              setSelectedBooking(booking)
-                              setIsUpdateStatusOpen(true)
-                            }}
+                            onClick={() => handleBookingClick(booking)}
                           >
                             Update Status
                           </DropdownMenuItem>
@@ -217,8 +217,8 @@ export default function AdminBookingsPage() {
           booking={selectedBooking}
           open={isUpdateStatusOpen}
           onClose={() => {
-            setIsUpdateStatusOpen(false)
-            setSelectedBooking(null)
+            setIsUpdateStatusOpen(false);
+            setSelectedBooking(null);
           }}
         />
       </AdminDashboardLayout>

@@ -9,7 +9,10 @@ export const sendEmail = async (templateParams: Record<string, unknown>) => {
     const response = await emailjs.send(
       "service_2r7r3ca",
       "template_v2rscvi",
-      templateParams,
+      {
+        ...templateParams,
+        to_email: 'info@ainslieparkgarage.com',
+      },
       "dQoiMB-gl_XYU--Dc"
     );
     console.log('EmailJS Response:', response);

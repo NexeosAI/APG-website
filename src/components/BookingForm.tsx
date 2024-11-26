@@ -21,6 +21,8 @@ export function BookingForm({ isOpen, onClose }: BookingFormProps) {
     serviceType: '',
     preferredDate: '',
     notes: '',
+    dataConsent: false,
+    marketingConsent: false,
   });
 
   // Function to format date as YYYY-MM-DD
@@ -50,26 +52,44 @@ export function BookingForm({ isOpen, onClose }: BookingFormProps) {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('bookings')
-        .insert({
-          customer_name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          vehicle_make: formData.vehicleMake,
-          vehicle_model: formData.vehicleModel,
-          vehicle_year: parseInt(formData.vehicleYear),
-          service_type: formData.serviceType,
-          preferred_date: new Date(formData.preferredDate).toISOString(),
-          notes: formData.notes,
-          status: 'PENDING'
-        });
+      // Basic validation
+      if (!formData.name || !formData.phone || !formData.vehicleMake || 
+          !formData.vehicleModel || !formData.vehicleYear || !formData.serviceType) {
+        throw new Error('Please fill in all required fields');
+      }
 
-      if (error) throw error;
-      
+      // Create minimal booking data
+      const bookingData = {
+        customer_name: formData.name.trim(),
+        email: formData.email.trim() || null,
+        phone: formData.phone.trim(),
+        vehicle_make: formData.vehicleMake.trim(),
+        vehicle_model: formData.vehicleModel.trim(),
+        vehicle_year: parseInt(formData.vehicleYear),
+        service_type: formData.serviceType,
+        preferred_date: new Date(formData.preferredDate).toISOString(),
+        notes: formData.notes.trim() || '',
+        status: 'PENDING',
+        converted_to_customer: false
+      };
+
+      console.log('Submitting booking:', bookingData);
+
+      const { data, error } = await supabase
+        .from('bookings')
+        .insert([bookingData])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw new Error(error.message);
+      }
+
+      console.log('Booking created:', data);
+
       toast.success('Booking submitted successfully');
       onClose();
-      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -80,10 +100,12 @@ export function BookingForm({ isOpen, onClose }: BookingFormProps) {
         serviceType: '',
         preferredDate: '',
         notes: '',
+        dataConsent: false,
+        marketingConsent: false,
       });
     } catch (error) {
-      console.error('Error:', error);
-      toast.error('Failed to submit booking');
+      console.error('Booking error:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to submit booking');
     } finally {
       setIsSubmitting(false);
     }
@@ -188,7 +210,7 @@ export function BookingForm({ isOpen, onClose }: BookingFormProps) {
             onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
           >
             <option value="">Select a service</option>
-            <option value="MOT">MOT Test</option>
+            <option value="MOT Test">MOT Test</option>
             <option value="Service">Service</option>
             <option value="Repair">Repair</option>
             <option value="Diagnostic">Diagnostic</option>
@@ -207,10 +229,10 @@ export function BookingForm({ isOpen, onClose }: BookingFormProps) {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ef1c25] focus:ring-[#ef1c25] sm:text-sm"
             value={formData.preferredDate}
             onChange={handleDateChange}
-            onKeyDown={(e) => e.preventDefault()} // Prevent manual input
+            onKeyDown={(e) => e.preventDefault()}
             onClick={(e) => {
               const input = e.target as HTMLInputElement;
-              input.showPicker(); // Show the date picker
+              input.showPicker();
             }}
           />
           <p className="mt-1 text-sm text-gray-500">
@@ -229,6 +251,43 @@ export function BookingForm({ isOpen, onClose }: BookingFormProps) {
             value={formData.notes}
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
           />
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-start">
+            <input
+              type="checkbox"
+              id="dataConsent"
+              required
+              className="mt-1"
+              checked={formData.dataConsent}
+              onChange={(e) => setFormData({ ...formData, dataConsent: e.target.checked })}
+            />
+            <label htmlFor="dataConsent" className="ml-2 text-sm text-gray-600">
+              I consent to my data being processed as described in the{' '}
+              <button
+                type="button"
+                className="text-[#ef1c25] hover:underline"
+                onClick={() => {/* Show privacy policy modal */}}
+              >
+                privacy policy
+              </button>
+              . *
+            </label>
+          </div>
+
+          <div className="flex items-start">
+            <input
+              type="checkbox"
+              id="marketingConsent"
+              className="mt-1"
+              checked={formData.marketingConsent}
+              onChange={(e) => setFormData({ ...formData, marketingConsent: e.target.checked })}
+            />
+            <label htmlFor="marketingConsent" className="ml-2 text-sm text-gray-600">
+              I would like to receive service reminders and updates (optional)
+            </label>
+          </div>
         </div>
 
         <div className="mt-6 flex justify-end space-x-3">
