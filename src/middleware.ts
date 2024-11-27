@@ -10,15 +10,27 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession()
 
-  // If user is not signed in and the current path starts with /admin
-  if (!session && req.nextUrl.pathname.startsWith('/admin')) {
-    const redirectUrl = new URL('/auth/signin', req.url)
-    return NextResponse.redirect(redirectUrl)
+  // Check if user is authenticated
+  if (!session) {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
+  // Check if user is an admin for admin routes
+  if (req.nextUrl.pathname.startsWith('/admin')) {
+    const { data: adminRole } = await supabase
+      .from('admin_roles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single()
+
+    if (!adminRole) {
+      return NextResponse.redirect(new URL('/', req.url))
+    }
   }
 
   return res
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/auth/signin'],
+  matcher: ['/admin/:path*'],
 } 
